@@ -28,12 +28,17 @@ running = True
 #boucle de jeu 
 
 while running:
+    
     #appliquer l'arriere plan 
     screen.blit(background,(0,-200))
     
     #appliquer l'img du joueur 
     
     screen.blit(game.player.image, game.player.rect)
+    
+    #actualiser la barre de vie du joueur
+    
+    game.player.update_health_bar(screen)
     
     #recup les projectiles du joueur
     for projectile in game.player.all_projectiles:
@@ -42,6 +47,7 @@ while running:
         #recup les monstres
     for monster in game.all_monsters:
         monster.forward()
+        monster.update_health_bar(screen)
     
     #appliquer le groupe projectile
     game.player.all_projectiles.draw(screen)
