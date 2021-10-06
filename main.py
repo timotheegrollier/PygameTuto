@@ -38,9 +38,16 @@ while running:
     #recup les projectiles du joueur
     for projectile in game.player.all_projectiles:
         projectile.move()
+        
+        #recup les monstres
+    for monster in game.all_monsters:
+        monster.forward()
     
     #appliquer le groupe projectile
     game.player.all_projectiles.draw(screen)
+    
+    #aplliquer le groupe de monstres
+    game.all_monsters.draw(screen)
     
     #verifier la direction du joueur
     
