@@ -1,4 +1,5 @@
 import pygame
+import math
 from pygame.constants import K_LEFT
 from game import Game
 pygame.init()
@@ -17,6 +18,20 @@ screen = pygame.display.set_mode((1080,720))
 #importer le background 
 background = pygame.image.load("assets/bg.jpg")
 
+#importer charger notre bannière
+banner = pygame.image.load('assets/banner.png')
+banner = pygame.transform.scale(banner,(500,500))
+banner_rect = banner.get_rect()
+banner_rect.x = math.ceil(screen.get_width() / 4)
+
+
+# Importer le bouton de lancement
+play_button = pygame.image.load('assets/button.png')
+play_button = pygame.transform.scale(play_button,(400,150))
+play_button_rect = play_button.get_rect()
+play_button_rect.x = math.ceil(screen.get_width() / 3.33)
+play_button_rect.y = math.ceil(screen.get_height() /2)
+
 #charger le jeu 
 
 game = Game()
@@ -32,36 +47,15 @@ while running:
     #appliquer l'arriere plan 
     screen.blit(background,(0,-200))
     
-    #appliquer l'img du joueur 
+   #verifier si le jeu à commencé 
+    if game.is_playing:
+       # declencher les instructions de la partie
+        game.update(screen)
+        #verifier si le jeu n'a pas commencé 
+    else:
+        screen.blit(play_button,(play_button_rect))
+        screen.blit(banner,(banner_rect))
     
-    screen.blit(game.player.image, game.player.rect)
-    
-    #actualiser la barre de vie du joueur
-    
-    game.player.update_health_bar(screen)
-    
-    #recup les projectiles du joueur
-    for projectile in game.player.all_projectiles:
-        projectile.move()
-        
-        #recup les monstres
-    for monster in game.all_monsters:
-        monster.forward()
-        monster.update_health_bar(screen)
-    
-    #appliquer le groupe projectile
-    game.player.all_projectiles.draw(screen)
-    
-    #aplliquer le groupe de monstres
-    game.all_monsters.draw(screen)
-    
-    #verifier la direction du joueur
-    
-    if game.pressed.get(pygame.K_RIGHT) and game.player.rect.x + game.player.rect.width < screen.get_width():
-        game.player.move_right()
-    elif game.pressed.get(pygame.K_LEFT) and game.player.rect.x > 0:
-        game.player.move_left()
-        
     
     #mettre a jour le screen
     pygame.display.flip()
@@ -85,4 +79,8 @@ while running:
                 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
-           
+            
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            #verification pour savoir si la souris est en collision avec le bouton
+            if play_button_rect.collidepoint(event.pos):
+                game.start()

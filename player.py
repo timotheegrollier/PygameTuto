@@ -24,6 +24,9 @@ class Player(pygame.sprite.Sprite):
     def damage(self,amount):
         if self.health - amount > amount:
             self.health -= amount
+        else:
+            #si le joueur n'a plus de PV
+            self.game.game_over()
             
         
         
