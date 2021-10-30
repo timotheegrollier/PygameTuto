@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from monster import Alien, Monster, Mummy
 from comet_event import CometFallEvent
+from sounds import SoundManager
 
 class Game:
     
@@ -16,7 +17,11 @@ class Game:
         self.comet_event = CometFallEvent(self)
         #groupe de monstre
         self.all_monsters = pygame.sprite.Group()
+        self.sound_manager = SoundManager()
+        self.score = 0
         self.pressed = {}
+        self.font =pygame.font.Font("assets/my_custom_font.ttf",28)
+        
         
         
         
@@ -25,6 +30,11 @@ class Game:
         self.spawn_monster(Mummy)
         self.spawn_monster(Mummy)
         self.spawn_monster(Alien)
+        
+        
+        
+    def add_score(self,points=10):
+        self.score += points
 
         
         
@@ -38,10 +48,18 @@ class Game:
         self.player.all_projectiles = pygame.sprite.Group()
         self.comet_event.reset_percent()
         self.is_playing = False
+        self.score = 0
+        #jouer le son 
+        self.sound_manager.play('game_over')
         
         
         
     def update(self,screen):
+        
+        #afficher le score sur l'écran
+
+        score_text = self.font.render(f"Score: {self.score}",1,(0,0,0))
+        screen.blit(score_text,(20,20))
         
     #appliquer l'img du joueur 
         screen.blit(self.player.image, self.player.rect)

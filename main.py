@@ -8,7 +8,7 @@ pygame.init()
 
 # definir une clock
 clock = pygame.time.Clock()
-FPS = 100
+FPS = 140
 
 
 #generer la fenetre
@@ -76,7 +76,13 @@ while running:
             
             #detecter si la touche espace est enfoncée
             if event.key == pygame.K_SPACE:
-                game.player.lauch_projectile()
+                if game.is_playing:
+                    game.player.lauch_projectile()
+                else:
+                    game.start()
+                #jouer le son
+                    game.sound_manager.play('click')
+                    
                 
                 
         elif event.type == pygame.KEYUP:
@@ -86,4 +92,6 @@ while running:
             #verification pour savoir si la souris est en collision avec le bouton
             if play_button_rect.collidepoint(event.pos):
                 game.start()
+                #jouer le son
+                game.sound_manager.play('click')
     clock.tick(FPS)
