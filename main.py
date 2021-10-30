@@ -6,7 +6,9 @@ pygame.init()
 
 #Creer une classe pour le jeu 
 
-
+# definir une clock
+clock = pygame.time.Clock()
+FPS = 100
 
 
 #generer la fenetre
@@ -84,3 +86,4 @@ while running:
             #verification pour savoir si la souris est en collision avec le bouton
             if play_button_rect.collidepoint(event.pos):
                 game.start()
+    clock.tick(FPS)
